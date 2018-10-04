@@ -15,7 +15,7 @@ class Profile extends React.Component {
         }
       }
 
-    handleOnDrop = (files, rejectedFiles) => {
+    handleOnDrop = (files) => {
         this.setState({ formValues: { ...this.state.formValues, file: files[0] } })
     }
 
@@ -23,14 +23,28 @@ class Profile extends React.Component {
         const { formValues: { file } } = this.state;
     return(
         <Grid.Column width={4}>
+        {/* <DropStyle> */}
             <Dropzone
+            style={
+                {"width" : "150px",
+                "text-align" : "center", 
+                "height" : "30px",
+                "font-size" : "20px",
+                "padding" : "5px",
+                "border" : "1px solid black",
+                "background-color" : "green",
+                "cursor" : "pointer"
+                }
+            }
             onDrop={this.handleOnDrop}
             multiple={false}
             >
+            Add A Gallery
                 { file && <Image src={file.preview} alt="upload preview"/> }
             </Dropzone>
-        </Grid.Column>
-    )
+        {/* </DropStyle> */}
+        </Grid.Column>   
+        )
     }
 
     profileView = () => {
@@ -65,6 +79,14 @@ font-size: 25px;
 padding: 10px;
 margin: 10px;
 `
+// const DropStyle = Styled.div`
+// font-style: none;
+// font-size: 25px;
+// cursor: pointer;
+// width: 170px;
+// height: 35px;
+// border: 3px solid black;
+// `
 
 
 
