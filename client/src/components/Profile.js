@@ -1,17 +1,18 @@
 import React from 'react'
 import Styled from 'styled-components';
-import { Grid, Container, Divider, Header, Image} from 'semantic-ui-react';
+import { Grid, Container, Divider, Header, Image, Form, Button} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 
+
 class Profile extends React.Component {
-    state = { editing: false, formValues: { name: '', email: '', file: '' } }
+    state = { gallery: [], editing: false, formValues: { name: '', email: '', file: '' } }
 
     static getDerivedStateFromProps(props, state) {
         const { user } = props 
-        const { formValues, editing } = state 
+        const { formValues, editing, gallery } = state 
         if (user.name !== formValues.name && !editing) {
-          return { formValues: {name: user.name, email: user.email } }
+          return { gallery: gallery, formValues: {name: user.name, email: user.email } }
         }
       }
 
@@ -19,11 +20,38 @@ class Profile extends React.Component {
         this.setState({ formValues: { ...this.state.formValues, file: files[0] } })
     }
 
+    // handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const { formValues } = this.state
+    //     const { user, dispatch } = this.props;
+    //     dispatch(updateGallery(user.id, formValues ))
+    //     this.setState({ 
+    //       editing: false,
+    //       formValues: {
+    //         ...this.state.formValues,
+    //         file: ''
+    //       }
+    //      })
+    //   }
+
+    handleButton = () => {
+        const { formValues: { file } } = this.state;
+        if (file == null) {
+            return(
+                <div></div>
+            )
+        }else{
+            return(
+                <Button onClick={this.handleSubmit} width="200px">Add</Button>
+            )
+        }
+    }
+
     addGallery = () => {
         const { formValues: { file } } = this.state;
     return(
         <Grid.Column width={4}>
-        {/* <DropStyle> */}
+        <Form onSubmit={this.handleSubmit}> 
             <Dropzone
             style={
                 {"width" : "150px",
@@ -31,8 +59,9 @@ class Profile extends React.Component {
                 "height" : "30px",
                 "font-size" : "20px",
                 "padding" : "5px",
+                "margin-bottom" : "150px",
                 "border" : "1px solid black",
-                "background-color" : "green",
+                "background-color" : "rgb(255,136,77",
                 "cursor" : "pointer"
                 }
             }
@@ -42,7 +71,7 @@ class Profile extends React.Component {
             Add A Gallery
                 { file && <Image src={file.preview} alt="upload preview"/> }
             </Dropzone>
-        {/* </DropStyle> */}
+        </Form>
         </Grid.Column>   
         )
     }
@@ -51,24 +80,27 @@ class Profile extends React.Component {
         const { user } = this.props;
         return (
           <>  
-              <Header as="h1">{user.name}</Header>
+              <Header as="h1">Welcome {user.name}</Header>
           </>
         )
       }
-
-    
 
     render() {
         return(   
             <Container>
                 <Head>
-                    Welcome { this.profileView() }
+                    { this.profileView() }
                 </Head>
-                <div>
-                    { this.addGallery() }
-                </div>
+                <Grid>
+                    <Grid.Row>
+                        { this.addGallery() }
+                    </Grid.Row>
+                    <Grid.Row>
+                        { this.handleButton() }
+                    </Grid.Row>
+                </Grid> 
             <Divider hidden />
-            </Container>
+           </Container>
         )
     }
 }
@@ -79,16 +111,6 @@ font-size: 25px;
 padding: 10px;
 margin: 10px;
 `
-// const DropStyle = Styled.div`
-// font-style: none;
-// font-size: 25px;
-// cursor: pointer;
-// width: 170px;
-// height: 35px;
-// border: 3px solid black;
-// `
-
-
 
 const mapStateToProps = (state) => {
     return { user: state.user }

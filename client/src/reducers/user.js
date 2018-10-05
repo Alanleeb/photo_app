@@ -4,6 +4,7 @@ import { setFlash } from './flash';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
 
+
 export const login = (user) => {
   return { type: LOGIN, user };
 }
